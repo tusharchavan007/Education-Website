@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Market Academy</title>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100%;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #2d3748;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: rgb(127, 89, 224);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        /* Main Content */
+        main {
+            background: white;
+            min-height: 60%;
+        }
+
+        .courses-section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: #2d3748;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .course-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .course-level {
+            font-size: 0.9rem;
+            font-weight: 600;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-duration {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .course-content {
+            padding: 1.5rem;
+        }
+
+        .course-description {
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .course-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .course-features li {
+            padding: 0.3rem 0;
+            color: #2d3748;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .course-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #48bb78;
+            font-weight: bold;
+        }
+
+        .course-price {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .enroll-button {
+            width: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .enroll-button:hover {
+            background: linear-gradient(45deg, #5a67d8, #6b46c1);
+            transform: translateY(-1px);
+        }
+
+        .enroll-button:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Enrollment Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #5a67d8, #6b46c1);
+        }
+
+        .btn-secondary {
+            flex: 1;
+            background: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        /* Student Dashboard */
+        .dashboard {
+            display: none;
+            padding: 2rem 0;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .enrolled-courses {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .enrolled-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #48bb78, #38a169);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Footer */
+        footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                width: calc(100% - 2rem);
+            }
+        }
+
+        /* Success Messages */
+        .success-message {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            color: #276749;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .error-message {
+            background: #fed7d7;
+            border: 1px solid #feb2b2;
+            color: #c53030;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+    </style>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <header>
+   <nav class="container"><a href="#" class="logo" id="site-title">TradeGuru Institute<a>
+    <ul class="nav-links">
+     <li><a href="#">Courses</a></li>
+     <li><a href="#" onclick="showDashboard()">My Dashboard</a></li>
+     <li><a href="#">About</a></li>
+     <li><a href="#">Contact</a></li>
+    </ul>
+   </nav>
+  </header>
+  <main>
+   <section class="hero">
+    <div class="container">
+     <h1 id="hero-title">Master the Stock Market</h1>
+     <p id="hero-subtitle">From beginner to advanced trader - comprehensive courses designed by industry experts</p><a href="#courses" class="cta-button">Start Learning Today</a>
+    </div>
+   </section>
+   <section id="courses" class="courses-section">
+    <div class="container">
+     <h2 class="section-title">Our Courses</h2>
+     <div class="courses-grid"><!-- Beginner Course -->
+      <div class="course-card">
+       <div class="course-header">
+        <div class="course-level">
+         BEGINNER
+        </div>
+        <h3 class="course-title" id="beginner-title">Stock Market Fundamentals</h3>
+        <div class="course-duration">
+         8 weeks • 24 lessons
+        </div>
+       </div>
+       <div class="course-content">
+        <p class="course-description">Perfect for complete beginners. Learn the basics of stock market investing, how to read financial statements, and build your first portfolio.</p>
+        <ul class="course-features">
+         <li>Market basics and terminology</li>
+         <li>How to analyze stocks</li>
+         <li>Risk management principles</li>
+         <li>Portfolio diversification</li>
+         <li>Live trading simulations</li>
+        </ul>
+        <div class="course-price">
+         3,999/-
+        </div><button class="enroll-button" onclick="openEnrollmentModal('beginner', 'Stock Market Fundamentals', 299)"> Enroll Now </button>
+       </div>
+      </div><!-- Intermediate Course -->
+      <div class="course-card">
+       <div class="course-header">
+        <div class="course-level">
+         INTERMEDIATE
+        </div>
+        <h3 class="course-title" id="intermediate-title">Technical Analysis Mastery</h3>
+        <div class="course-duration">
+         10 weeks • 30 lessons
+        </div>
+       </div>
+       <div class="course-content">
+        <p class="course-description">Advanced charting techniques, technical indicators, and pattern recognition to time your trades perfectly.</p>
+        <ul class="course-features">
+         <li>Chart patterns and indicators</li>
+         <li>Support and resistance levels</li>
+         <li>Moving averages and oscillators</li>
+         <li>Volume analysis</li>
+         <li>Real-time market analysis</li>
+        </ul>
+        <div class="course-price">
+         7,999/-
+        </div><button class="enroll-button" onclick="openEnrollmentModal('intermediate', 'Technical Analysis Mastery', 499)"> Enroll Now </button>
+       </div>
+      </div><!-- Advanced Course -->
+      <div class="course-card">
+       <div class="course-header">
+        <div class="course-level">
+         ADVANCED
+        </div>
+        <h3 class="course-title" id="advanced-title">Professional Trading Strategies</h3>
+        <div class="course-duration">
+         12 weeks • 36 lessons
+        </div>
+       </div>
+       <div class="course-content">
+        <p class="course-description">Professional-level strategies used by hedge funds and institutional traders. Options, derivatives, and advanced risk management.</p>
+        <ul class="course-features">
+         <li>Options and derivatives trading</li>
+         <li>Algorithmic trading basics</li>
+         <li>Advanced risk management</li>
+         <li>Market psychology</li>
+         <li>1-on-1 mentorship sessions</li>
+        </ul>
+        <div class="course-price">
+         12,999/-
+        </div><button class="enroll-button" onclick="openEnrollmentModal('advanced', 'Professional Trading Strategies', 799)"> Enroll Now </button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Student Dashboard -->
+   <section id="dashboard" class="dashboard">
+    <div class="container">
+     <div class="dashboard-header">
+      <h2 class="dashboard-title">My Learning Dashboard</h2>
+      <p>Track your progress and continue your learning journey</p>
+     </div>
+     <div id="enrolled-courses" class="enrolled-courses"><!-- Enrolled courses will be populated here -->
+     </div>
+     <div style="text-align: center; margin-top: 2rem;"><button class="btn-secondary" onclick="showCourses()">Browse More Courses</button>
+     </div>
+    </div>
+   </section>
+  </main><!-- Enrollment Modal -->
+  <div id="enrollment-modal" class="modal">
+   <div class="modal-content">
+    <div class="modal-header">
+     <h3 class="modal-title">Enroll in Course</h3>
+     <p id="selected-course-info"></p>
+    </div>
+    <form id="enrollment-form">
+     <div class="form-group"><label for="student-name" class="form-label">Full Name</label> <input type="text" id="student-name" class="form-input" required>
+     </div>
+     <div class="form-group"><label for="student-email" class="form-label">Email Address</label> <input type="email" id="student-email" class="form-input" required>
+     </div>
+     <div id="enrollment-message"></div>
+     <div class="modal-buttons"><button type="submit" class="btn-primary" id="confirm-enrollment"> Confirm Enrollment </button> <button type="button" class="btn-secondary" onclick="closeEnrollmentModal()"> Cancel </button>
+     </div>
+    </form>
+   </div>
+  </div>
+  <footer>
+   <div class="container">
+    <p id="footer-text">© 2024 Stock Market Academy. All rights reserved.</p>
+   </div>
+  </footer>
+  <script>
+        // Configuration and state
+        const defaultConfig = {
+            site_title: "Stock Market Academy",
+            hero_title: "Master the Stock Market",
+            hero_subtitle: "From beginner to advanced trader - comprehensive courses designed by industry experts",
+            beginner_title: "Stock Market Fundamentals",
+            intermediate_title: "Technical Analysis Mastery",
+            advanced_title: "Professional Trading Strategies",
+            footer_text: "© 2024 Stock Market Academy. All rights reserved."
+        };
+
+        let currentEnrollment = null;
+        let enrolledCourses = [];
+
+        // Course data
+        const courses = {
+            beginner: {
+                id: 'beginner',
+                title: 'Stock Market Fundamentals',
+                level: 'BEGINNER',
+                duration: '8 weeks • 24 lessons',
+                price: 3999,
+                lessons: [
+                    'Introduction to Stock Markets',
+                    'Understanding Stock Exchanges',
+                    'Reading Financial Statements',
+                    'Fundamental Analysis Basics',
+                    'Risk Assessment',
+                    'Portfolio Building',
+                    'Market Orders and Types',
+                    'Investment Strategies'
+                ]
+            },
+            intermediate: {
+                id: 'intermediate',
+                title: 'Technical Analysis Mastery',
+                level: 'INTERMEDIATE',
+                duration: '10 weeks • 30 lessons',
+                price: 7999,
+                lessons: [
+                    'Chart Pattern Recognition',
+                    'Technical Indicators',
+                    'Moving Averages',
+                    'Support and Resistance',
+                    'Volume Analysis',
+                    'Candlestick Patterns',
+                    'Trend Analysis',
+                    'Market Timing'
+                ]
+            },
+            advanced: {
+                id: 'advanced',
+                title: 'Professional Trading Strategies',
+                level: 'ADVANCED',
+                duration: '12 weeks • 36 lessons',
+                price: 12999,
+                lessons: [
+                    'Options Trading',
+                    'Derivatives and Futures',
+                    'Algorithmic Trading',
+                    'Risk Management',
+                    'Market Psychology',
+                    'Advanced Strategies',
+                    'Portfolio Optimization',
+                    'Professional Tools'
+                ]
+            }
+        };
+
+        // Data SDK handler
+        const dataHandler = {
+            onDataChanged(data) {
+                enrolledCourses = data;
+                updateDashboard();
+            }
+        };
+
+        // Initialize application
+        async function initializeApp() {
+            // Initialize Data SDK
+            const initResult = await window.dataSdk.init(dataHandler);
+            if (!initResult.isOk) {
+                console.error("Failed to initialize data SDK");
+                return;
+            }
+
+            // Initialize Element SDK
+            if (window.elementSdk) {
+                await window.elementSdk.init({
+                    defaultConfig,
+                    onConfigChange: async (config) => {
+                        document.getElementById('site-title').textContent = config.site_title || defaultConfig.site_title;
+                        document.getElementById('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+                        document.getElementById('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+                        document.getElementById('beginner-title').textContent = config.beginner_title || defaultConfig.beginner_title;
+                        document.getElementById('intermediate-title').textContent = config.intermediate_title || defaultConfig.intermediate_title;
+                        document.getElementById('advanced-title').textContent = config.advanced_title || defaultConfig.advanced_title;
+                        document.getElementById('footer-text').textContent = config.footer_text || defaultConfig.footer_text;
+                    },
+                    mapToCapabilities: (config) => ({
+                        recolorables: [
+                            {
+                                get: () => config.background_color || "#667eea",
+                                set: (value) => {
+                                    if (window.elementSdk) {
+                                        window.elementSdk.setConfig({ background_color: value });
+                                    }
+                                }
+                            },
+                            {
+                                get: () => config.surface_color || "#ffffff",
+                                set: (value) => {
+                                    if (window.elementSdk) {
+                                        window.elementSdk.setConfig({ surface_color: value });
+                                    }
+                                }
+                            },
+                            {
+                                get: () => config.text_color || "#2d3748",
+                                set: (value) => {
+                                    if (window.elementSdk) {
+                                        window.elementSdk.setConfig({ text_color: value });
+                                    }
+                                }
+                            },
+                            {
+                                get: () => config.primary_action_color || "#ff6b6b",
+                                set: (value) => {
+                                    if (window.elementSdk) {
+                                        window.elementSdk.setConfig({ primary_action_color: value });
+                                    }
+                                }
+                            },
+                            {
+                                get: () => config.secondary_action_color || "#667eea",
+                                set: (value) => {
+                                    if (window.elementSdk) {
+                                        window.elementSdk.setConfig({ secondary_action_color: value });
+                                    }
+                                }
+                            }
+                        ],
+                        borderables: [],
+                        fontEditable: {
+                            get: () => config.font_family || "Inter",
+                            set: (value) => {
+                                if (window.elementSdk) {
+                                    window.elementSdk.setConfig({ font_family: value });
+                                }
+                            }
+                        },
+                        fontSizeable: {
+                            get: () => config.font_size || 16,
+                            set: (value) => {
+                                if (window.elementSdk) {
+                                    window.elementSdk.setConfig({ font_size: value });
+                                }
+                            }
+                        }
+                    }),
+                    mapToEditPanelValues: (config) => new Map([
+                        ["site_title", config.site_title || defaultConfig.site_title],
+                        ["hero_title", config.hero_title || defaultConfig.hero_title],
+                        ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+                        ["beginner_title", config.beginner_title || defaultConfig.beginner_title],
+                        ["intermediate_title", config.intermediate_title || defaultConfig.intermediate_title],
+                        ["advanced_title", config.advanced_title || defaultConfig.advanced_title],
+                        ["footer_text", config.footer_text || defaultConfig.footer_text]
+                    ])
+                });
+            }
+        }
+
+        // Enrollment functions
+        function openEnrollmentModal(courseId, courseTitle, price) {
+            currentEnrollment = { courseId, courseTitle, price };
+            document.getElementById('selected-course-info').textContent = `${courseTitle} - $${price}`;
+            document.getElementById('enrollment-modal').style.display = 'block';
+            document.getElementById('enrollment-message').innerHTML = '';
+        }
+
+        function closeEnrollmentModal() {
+            document.getElementById('enrollment-modal').style.display = 'none';
+            document.getElementById('enrollment-form').reset();
+            currentEnrollment = null;
+        }
+
+        // Handle enrollment form submission
+        document.getElementById('enrollment-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!currentEnrollment) return;
+
+            const submitButton = document.getElementById('confirm-enrollment');
+            const messageDiv = document.getElementById('enrollment-message');
+            
+            // Show loading state
+            submitButton.innerHTML = '<span class="spinner"></span> Processing...';
+            submitButton.disabled = true;
+
+            const studentName = document.getElementById('student-name').value;
+            const studentEmail = document.getElementById('student-email').value;
+
+            // Check if already enrolled
+            const alreadyEnrolled = enrolledCourses.some(course => 
+                course.course_id === currentEnrollment.courseId && 
+                course.student_email === studentEmail
+            );
+
+            if (alreadyEnrolled) {
+                messageDiv.innerHTML = '<div class="error-message">You are already enrolled in this course!</div>';
+                submitButton.innerHTML = 'Confirm Enrollment';
+                submitButton.disabled = false;
+                return;
+            }
+
+            // Check enrollment limit
+            if (enrolledCourses.length >= 999) {
+                messageDiv.innerHTML = '<div class="error-message">Maximum enrollment limit reached. Please contact support.</div>';
+                submitButton.innerHTML = 'Confirm Enrollment';
+                submitButton.disabled = false;
+                return;
+            }
+
+            // Create enrollment record
+            const enrollmentData = {
+                student_id: `student_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                course_id: currentEnrollment.courseId,
+                student_name: studentName,
+                student_email: studentEmail,
+                enrollment_date: new Date().toISOString(),
+                progress: 0,
+                completed: false
+            };
+
+            const result = await window.dataSdk.create(enrollmentData);
+
+            if (result.isOk) {
+                messageDiv.innerHTML = '<div class="success-message">Successfully enrolled! Welcome to the course.</div>';
+                setTimeout(() => {
+                    closeEnrollmentModal();
+                    showDashboard();
+                }, 2000);
+            } else {
+                messageDiv.innerHTML = '<div class="error-message">Enrollment failed. Please try again.</div>';
+            }
+
+            submitButton.innerHTML = 'Confirm Enrollment';
+            submitButton.disabled = false;
+        });
+
+        // Dashboard functions
+        function showDashboard() {
+            document.getElementById('courses').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            updateDashboard();
+        }
+
+        function showCourses() {
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('courses').style.display = 'block';
+        }
+
+        function updateDashboard() {
+            const container = document.getElementById('enrolled-courses');
+            
+            if (enrolledCourses.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; grid-column: 1 / -1; padding: 2rem;">
+                        <h3>No courses enrolled yet</h3>
+                        <p>Start your learning journey by enrolling in a course!</p>
+                        <button class="cta-button" onclick="showCourses()">Browse Courses</button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            
+            enrolledCourses.forEach(enrollment => {
+                const course = courses[enrollment.course_id];
+                if (!course) return;
+
+                const courseCard = document.createElement('div');
+                courseCard.className = 'enrolled-card';
+                courseCard.innerHTML = `
+                    <h3>${course.title}</h3>
+                    <p><strong>Level:</strong> ${course.level}</p>
+                    <p><strong>Duration:</strong> ${course.duration}</p>
+                    <p><strong>Enrolled:</strong> ${new Date(enrollment.enrollment_date).toLocaleDateString()}</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${enrollment.progress}%"></div>
+                    </div>
+                    <p><strong>Progress:</strong> ${enrollment.progress}% Complete</p>
+                    <button class="btn-primary" onclick="updateProgress('${enrollment.student_id}', ${enrollment.progress})">
+                        ${enrollment.progress < 100 ? 'Continue Learning' : 'Review Course'}
+                    </button>
+                `;
+                container.appendChild(courseCard);
+            });
+        }
+
+        // Progress update function
+        async function updateProgress(studentId, currentProgress) {
+            const enrollment = enrolledCourses.find(e => e.student_id === studentId);
+            if (!enrollment) return;
+
+            const newProgress = Math.min(currentProgress + 10, 100);
+            const updatedEnrollment = {
+                ...enrollment,
+                progress: newProgress,
+                completed: newProgress === 100
+            };
+
+            const result = await window.dataSdk.update(updatedEnrollment);
+            if (!result.isOk) {
+                alert('Failed to update progress. Please try again.');
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('enrollment-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEnrollmentModal();
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize the application
+        initializeApp();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99e56107a0c7a73c',t:'MTc2MzExMTQ2MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
